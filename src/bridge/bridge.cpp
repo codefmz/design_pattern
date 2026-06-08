@@ -1,4 +1,4 @@
-﻿#include "gtest/gtest.h"
+#include "gtest/gtest.h"
 #include "bridge.h"
 
 class bridgeTest : public ::testing::Test {

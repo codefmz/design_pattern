@@ -1,3 +1,4 @@
+# add_subdirectory(singleton)
 # add_subdirectory(simple_factory)
 # add_subdirectory(strategy)
 # add_subdirectory(proxy)
@@ -11,7 +12,6 @@
 # add_subdirectory(state)
 # add_subdirectory(memento)
 # add_subdirectory(component)
-# add_subdirectory(singleton)
 # add_subdirectory(bridge)
 # add_subdirectory(command)
 # add_subdirectory(handle)

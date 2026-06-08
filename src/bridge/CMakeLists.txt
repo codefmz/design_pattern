@@ -7,4 +7,4 @@ set_target_properties(libbridge PROPERTIES
 
 file(GLOB SRC "./*.cpp")
 add_executable(bridge ${SRC})
-target_link_libraries(adapter PUBLIC gtest)
+target_link_libraries(bridge PUBLIC GTest::gtest)
