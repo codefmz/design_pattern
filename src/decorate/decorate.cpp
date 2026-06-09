@@ -10,41 +10,24 @@ protected:
     ~decorateTest() override {
     }
     void SetUp() override {
-        person = new Person("小明");
-        shirt = new TShirt();
-        nike = new NikeShoes();
-        anta = new AntaShoes();
-        adidas = new Adadas();
-        jeans = new Jeans();
     }
     void TearDown() override {
-        delete person;
-        delete shirt;
-        delete nike;
-        delete anta;
-        delete adidas;
-        delete jeans;
     }
-
-    Person *person;
-    TShirt *shirt;
-    Adadas *adidas;
-    NikeShoes *nike;
-    AntaShoes *anta;
-    Jeans *jeans;
 };
 
 TEST_F(decorateTest, normal) {
-    Person *shirtPerson = shirt->Decorate(person);
-    Person *adidasShirtPerson = adidas->Decorate(shirtPerson);
-    Person *nikeAdidasShirtPerson = nike->Decorate(adidasShirtPerson);
-    nikeAdidasShirtPerson->show();
-}
 
-/* 可以选择随意拼接装饰类，解决类爆炸的问题 */
-TEST_F(decorateTest, shoes) {
-    Person *antaPerson = anta->Decorate(person);
-    Person *jeansAntaPer = jeans->Decorate(antaPerson);
-    Person *shirtJeansAntaPer = shirt->Decorate(jeansAntaPer);
-    shirtJeansAntaPer->show();
+    //1. 需要先缓存，压缩，在加密，最后写入文件
+    auto fileStream = std::make_unique<FileStream>();
+    auto encryptStream = std::make_unique<EncryptDecorator>(std::move(fileStream));
+    auto compressStream = std::make_unique<CompressDecorator>(std::move(encryptStream));
+    auto cacheStream = std::make_unique<CacheDecorator>(std::move(compressStream));
+    cacheStream->write("Hello, World!");
+
+
+    //2. 只需要压缩和加密，不需要缓存
+    auto fileStream1 = std::make_unique<FileStream>();
+    auto encryptStream1 = std::make_unique<EncryptDecorator>(std::move(fileStream1));
+    auto compressStream1 = std::make_unique<CompressDecorator>(std::move(encryptStream1));
+    compressStream1->write("Hello, World!");
 }

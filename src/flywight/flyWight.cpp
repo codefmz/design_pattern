@@ -22,4 +22,10 @@ TEST_F(flyWightTest, test1) {
 
     User user2("小红");
     webSite->Use(user2);
+
+    std::cout << "网站总数：" << factory.getWebSiteCount() << std::endl;
+
+    auto webSite2 = factory.getWebSiteCategory("游戏");
+    webSite2->Use(user1);
+    webSite2->Use(user2);
 }

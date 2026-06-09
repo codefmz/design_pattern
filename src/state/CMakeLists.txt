@@ -1,8 +1,3 @@
 file(GLOB SRC "./*.cpp")
-
-add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
-add_library(libstate STATIC ${SRC})
-target_link_libraries(libstate PUBLIC GTest::gtest)
-
-set_target_properties(libstate PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
+add_executable(state ${SRC})
+target_link_libraries(state PUBLIC GTest::gtest GTest::gtest_main)

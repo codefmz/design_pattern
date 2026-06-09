@@ -1,78 +1,60 @@
 ﻿#pragma once
 #include <iostream>
+#include <memory>
 
-class Person {
+class Stream {
+public:
+    virtual ~Stream() = default;
+    virtual void write(const std::string &data) = 0;
+};
+
+// 文件需要，加密 + 压缩 + 缓存， 两者可以自由组合，如果直接使用继承的方式，会有15种，类会爆炸，装饰模式可以解决这个问题
+
+class FileStream : public Stream {
+public:
+    void write(const std::string &data) override {
+        std::cout << "write data to file" << std::endl;
+    }
+};
+
+
+class Decorator : public Stream {
+public:
+    explicit Decorator(std::unique_ptr<Stream> stream) : stream(std::move(stream)) {
+    }
+    void write(const std::string &data) override {
+        stream->write(data);
+    }
 private:
-    std::string name;
-
-public:
-    Person() {
-    }
-    Person(std::string name) : name(name) {
-    }
-    virtual ~Person() = default;
-    virtual void show() {
-        std::cout << name << " wear: ";
-    };
+    std::unique_ptr<Stream> stream;
 };
 
-class Finery : public Person {
-protected:
-    Person* person;
-
+class EncryptDecorator : public Decorator {
 public:
-    Finery() {
-        person = nullptr;
+    explicit EncryptDecorator(std::unique_ptr<Stream> stream) : Decorator(std::move(stream)) {
     }
-
-    virtual ~Finery() = default;
-    virtual void show() {
-        if (person != nullptr) {
-            person->show();
-        }
-    };
-    virtual Person* Decorate(Person* person) {
-        this->person = person;
-        return this;
+    void write(const std::string &data) override {
+        std::cout << "encrypt data" << std::endl;
+        Decorator::write(data);
     }
 };
 
-class TShirt : public Finery {
+class CompressDecorator : public Decorator {
 public:
-    void show() override {
-        Finery::show();
-        std::cout << "TShirt ";
-    };
-};
+    explicit CompressDecorator(std::unique_ptr<Stream> stream) : Decorator(std::move(stream)) {
+    }
+    void write(const std::string &data) override {
+        std::cout << "compress data" << std::endl;
+        Decorator::write(data);
+    }
+};  
 
-class Jeans : public Finery {
+class CacheDecorator : public Decorator {
 public:
-    void show() override {
-        Finery::show();
-        std::cout << "Jeans ";
-    };
-};
-
-class NikeShoes : public Finery {
-public:
-    void show() override {
-        Finery::show();
-        std::cout << "NikeShoes ";
-    };
-};
-
-class AntaShoes : public Finery {
-public:
-    void show() override {
-        Finery::show();
-        std::cout << "AntaShoes ";
-    };
-};
-
-class Adadas : public Finery {
-public:
-    void show() override {
-        Finery::show();
-        std::cout << "Adadas ";
-    };
+    explicit CacheDecorator(std::unique_ptr<Stream> stream) : Decorator(std::move(stream)) {
+    }
+    void write(const std::string &data) override {
+        std::cout << "cache data" << std::endl;
+        Decorator::write(data);
+    }
 };

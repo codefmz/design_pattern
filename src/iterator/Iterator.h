@@ -1,6 +1,8 @@
-﻿#pragma once
+#pragma once
 
-#include "vector"
+#include <cstddef>
+#include <initializer_list>
+#include <vector>
 
 template<typename T>
 class Iterator {
@@ -18,8 +20,9 @@ class MyCollection;
 template<typename T>
 class CollectionIterator : public Iterator<T> {
 public:
-    CollectionIterator(const MyCollection<T>& c) :mc(c), index(0) {};
+    CollectionIterator(MyCollection<T>& c) : mc(c), index(0) {};
     virtual T& first() override {
+        index = 0;
         return mc.vct.front();
     };
 
@@ -29,21 +32,26 @@ public:
     };
 
     virtual bool isDone() const override {
-        return index > mc.vct.size();
+        return index >= mc.vct.size();
     };
     virtual T& current() override {
         return mc.vct[index];
     };
 
 private:
-    MyCollection<T> mc;
-    int index;
+    MyCollection<T>& mc;
+    std::size_t index;
 };
 
 template<typename T>
 class MyCollection
 {
 public:
+    MyCollection() : iter(nullptr) {}
+    ~MyCollection() {
+        delete iter;
+    }
+
     Iterator<T>* GetIterator() {
         if (!iter) {
             iter = new CollectionIterator<T>(*this);
@@ -51,14 +59,15 @@ public:
         return iter;
     }
 
-    void add(std::initializer_list<string> il) {
+    void add(std::initializer_list<T> il) {
         for (auto& i : il) {
             vct.push_back(i);
         }
     }
 
-
 private:
+    friend class CollectionIterator<T>;
+
     std::vector<T> vct;
     Iterator<T>* iter;
 };

@@ -1,7 +1,3 @@
 file(GLOB SRC "./*.cpp")
-
-add_library(libprototype STATIC ${SRC})
-target_link_libraries(libprototype PUBLIC GTest::gtest)
-
-set_target_properties(libprototype PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
+add_executable(prototype ${SRC})
+target_link_libraries(prototype PUBLIC GTest::gtest GTest::gtest_main)

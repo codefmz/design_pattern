@@ -32,10 +32,10 @@ class Template : public AbstractTemplate
 {
 public:
     virtual void step2() override {
-        std::cout << "Template::step2" << std::endl;
+        std::cout << "Special Template::step2" << std::endl;
     };
 
     virtual void step4() override {
-        std::cout << "Template::step4" << std::endl;
+        std::cout << "Special Template::step4" << std::endl;
     };
 };

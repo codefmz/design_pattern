@@ -2,31 +2,34 @@
 
 #include <iostream>
 #include <memory>
+#include <string>
 
-class Target {
+class Player {
 public:
-    virtual ~Target() = default;
-    virtual void request() = 0;
+    virtual ~Player() = default;
+    virtual void play(const std::string &path) = 0;
 };
 
-class Adapter : public Target {
+class VLCPlayer {
 public:
-    void request() override {
-        std::cout << " adapter improve target request." << std::endl;
+    void openMedia(const std::string &path) {
+        std::cout << " open media " << path << std::endl;
+    }
+
+    void start() {
+        std::cout << " start play. " << std::endl;
     }
 };
 
-class Adaptee {
+class VLCPlayerAdapter : public Player {
 public:
-    void specificRequest() {
-        std::cout << " specific request before. " << std::endl;
-        target->request();
-        std::cout << " specific request after. " << std::endl;
+    explicit VLCPlayerAdapter(std::unique_ptr<VLCPlayer> vlcPlayer) : vlcPlayer(std::move(vlcPlayer)) {}
+
+    void play(const std::string &path) override {
+        vlcPlayer->openMedia(path);
+        vlcPlayer->start();
     }
 
-    void setAdapter(std::shared_ptr<Target> target) {
-        this->target = target;
-    }
 private:
-    std::shared_ptr<Target> target;
+    std::unique_ptr<VLCPlayer> vlcPlayer;
 };

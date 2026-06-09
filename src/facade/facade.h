@@ -1,8 +1,7 @@
 ﻿ #pragma once
  #include <iostream>
 
-class SubSystemOne
-{
+class SubSystemOne {
 public:
     void MethodOne() {
         std::cout << "SubSystemOne MethodOne" << std::endl;
@@ -10,16 +9,14 @@ public:
 };
 
 
-class SubSystemTwo
-{
+class SubSystemTwo {
 public:
     void MethodTwo() {
         std::cout << "SubSystemTwo MethodTwo" << std::endl;
     }
 };
 
-class SubSystemThree
-{
+class SubSystemThree {
 public:
     void MethodThree() {
         std::cout << "SubSystemThree MethodThree" << std::endl;
@@ -27,8 +24,7 @@ public:
 };
 
 
-class Facade
-{
+class Facade {
 private:
     SubSystemOne *m_subSystemOne;
     SubSystemTwo *m_subSystemTwo;

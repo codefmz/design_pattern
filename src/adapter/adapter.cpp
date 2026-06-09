@@ -14,13 +14,7 @@ protected:
 };
 
 TEST(adapterTest, client) {
-    std::shared_ptr<Target> target = std::make_shared<Adapter>();
-    std::shared_ptr<Adaptee> adaptee = std::make_shared<Adaptee>();
-    adaptee->setAdapter(target);
-    adaptee->specificRequest();
-}
-
-int main(int argc, char** argv) {
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+    std::unique_ptr<VLCPlayer> vlcPlayer = std::make_unique<VLCPlayer>();
+    auto player = std::make_unique<VLCPlayerAdapter>(std::move(vlcPlayer));
+    player->play("test.mp4");
 }

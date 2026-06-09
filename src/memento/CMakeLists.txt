@@ -1,7 +1,3 @@
 file(GLOB SRC "./*.cpp")
-
-add_library(libmemento STATIC ${SRC})
-target_link_libraries(libmemento PUBLIC GTest::gtest)
-
-set_target_properties(libmemento  PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
+add_executable(memento ${SRC})
+target_link_libraries(memento PUBLIC GTest::gtest GTest::gtest_main)
